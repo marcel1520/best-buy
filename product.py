@@ -3,6 +3,7 @@ class Product:
         # Run validations to the received arguments
         assert price >= 0, f"Price {price} is not greater than or equal to zero!"
         assert quantity >= 0, f"Quantity {quantity} is not greater than or equal to zero!"
+        assert len(name) >= 5, f"Product name must be at least 5 characters long!"
 
         # Assign to self object
         self.name = name
@@ -30,9 +31,14 @@ class Product:
         print(f"{self.name} has been deactivated")
 
     def show(self):
-        print(f"{self.name}, {self.price}, {self.quantity}")
+        return f"{self.name}, {self.price}, {self.quantity}"
 
     def buy(self, quantity):
+        if quantity > self.quantity:
+            raise ValueError("Not enough stock to complete purchase.")
+        self.quantity -= quantity
+        if self.quantity == 0:
+            self.deactivate()
         return self.price * quantity
 
 
