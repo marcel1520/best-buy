@@ -1,81 +1,4 @@
-class Product:
-    def __init__(self, name: str, price: float, quantity=0):
-        # Run validations to the received arguments
-        assert price >= 0, f"Price {price} is not greater than or equal to zero!"
-        assert quantity >= 0, f"Quantity {quantity} is not greater than or equal to zero!"
-
-        # Assign to self object
-        self.name = name
-        self.price = price
-        self.quantity = quantity
-
-    def get_quantity(self):
-        return self.quantity
-
-    def set_quantity(self, quantity):
-        if quantity < 0:
-            raise ValueError(f"Quantity {quantity} cannot be less than zero!")
-        self.quantity = quantity
-
-    def is_active(self):
-        return self.quantity > 0
-
-    def activate(self):
-        if self.quantity <= 0:
-            self.quantity = 1
-        print(f"{self.name} has been activated.")
-
-    def deactivate(self):
-        self.quantity = 0
-        print(f"{self.name} has been deactivated")
-
-    def show(self):
-        print(f"{self.name}, {self.price}, {self.quantity}")
-
-    def buy(self, quantity):
-        return self.price * quantity
-
-
-class Store:
-    def __init__(self, products=None):
-        self.products = products or []
-
-    def add_product(self, product):
-        if not isinstance(product, Product):
-            raise ValueError("Only instances of Product can be added.")
-        self.products.append(product)
-        print(f"{product.name} has been added to the store.")
-
-    def remove_product(self, product):
-        if product in self.products:
-            self.products.remove(product)
-            print(f"{product.name} has been removed from the store.")
-        else:
-            print(f"{product.name} is not in the store.")
-
-    def get_total_quantity(self):
-        return sum(product.quantity for product in self.products)
-
-    def get_all_products(self):
-        return [product for product in self.products if product.is_active()]
-
-    def order(self, shopping_list):
-        total_price = 0
-        for product, quantity in shopping_list:
-            if product.is_active() and product.quantity >= quantity:
-                product.quantity -= quantity
-                total_price += product.buy(quantity)
-                print(f"Added {quantity} of {product.name} to the order.")
-            else:
-                print(f"{product.name} is not available in the requested quantity.")
-        return total_price
-
-store = Store(
-        [Product("MacBook Air M2", price=1450, quantity=100),
-         Product("Bose QuietComfort Earbuds", price=250, quantity=500),
-         Product("Google Pixel 7", price=500, quantity=250),
-        ])
-
+from store import store
 
 
 def menu_header(header):
@@ -96,8 +19,8 @@ def list_of_items(store):
         print("No active products available in the store.")
     else:
         print("Available products:")
-        for product in products:
-            print(f"{product.name}, {product.price}, {product.quantity}")
+        for ind, product in enumerate(products):
+            print(f"{ind + 1}: {product.name}, Price: ${product.price}, Quantity: {product.quantity}")
 
 
 def add_to_shopping_list(bb_store):
