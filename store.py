@@ -27,7 +27,6 @@ class Store:
         total_price = 0
         for product, quantity in shopping_list:
             if product.is_active() and product.quantity >= quantity:
-                product.quantity -= quantity
                 total_price += product.buy(quantity)
                 print(f"Added {quantity} of {product.name} to the order.")
             else:
